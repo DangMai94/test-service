@@ -3,7 +3,6 @@ spring:
   name: abbank.service.customer
   datasource:
     url: jdbc:postgresql://host.docker.internal:5432/abbank
-  #123
     username: myuser1
     password: 5432
   jpa:
