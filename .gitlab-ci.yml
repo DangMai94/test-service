@@ -1,0 +1,32 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+
+build:
+  stage: build
+  image: maven:3.8.6-openjdk-17
+  script:
+    - mvn clean package
+  artifacts:
+    paths:
+      - target/test-service.jar
+
+test:
+  stage: test
+  image: maven:3.8.6-openjdk-17
+  script:
+    - mvn test
+
+docker-build:
+  stage: deploy
+  image: test.1.0
+  services:
+    - docker:dind
+  script:
+    - docker build -t test-service .
+    - docker tag main http://localhost/root/test-service
+    - docker push http://localhost/root/test-service
